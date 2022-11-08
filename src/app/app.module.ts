@@ -1,18 +1,27 @@
 import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatSnackBarModule,
+    AngularFireModule.initializeApp({
+      apiKey: 'AIzaSyCNXFk5pTLMFoVqKCP79M2z94CH3hfwgVI',
+      authDomain: 'nestjs-auth-ae985.firebaseapp.com',
+      projectId: 'nestjs-auth-ae985',
+      storageBucket: 'nestjs-auth-ae985.appspot.com',
+      messagingSenderId: '412889347826',
+      appId: '1:412889347826:web:3d3a8e204d93822184c26b',
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
