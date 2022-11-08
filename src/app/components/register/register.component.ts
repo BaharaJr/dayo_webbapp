@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
@@ -6,14 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  hide = true;
-  loading = false;
-  constructor() {}
+  screen: string = 'register';
+  constructor(private title: Title) {
+    this.title.setTitle('Register');
+  }
 
   ngOnInit() {}
-
-  login = () => {
-    console.log('HERE');
-    this.loading = true;
-  };
 }
