@@ -3,6 +3,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Login, Register } from '../interfaces/auth.interface';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +15,8 @@ export class FirebaseService {
   constructor(
     private readonly auth: AngularFireAuth,
     private readonly router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private http: HttpClient
   ) {}
 
   /**
@@ -93,5 +96,11 @@ export class FirebaseService {
         this.router.navigate(['register']);
       }
     );
+  };
+
+  me = (token: string): Observable<any> => {
+    return this.http.get('../../api', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   };
 }
