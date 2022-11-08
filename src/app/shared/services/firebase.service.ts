@@ -42,4 +42,30 @@ export class FirebaseService {
       }
     );
   };
+
+  /**
+   * A method to handle registration with firebase
+   *
+   * @param data
+   */
+
+  register = (data: Register) => {
+    this.auth.createUserWithEmailAndPassword(data.email, data.password).then(
+      () => {
+        this.snackBar.open('Successfully registered...', '', {
+          duration: 5000,
+          panelClass: 'success',
+        });
+        this.router.navigate(['login']);
+      },
+      (error) => {
+        console.log('ERR', error);
+        this.snackBar.open(error.message, '', {
+          panelClass: 'error',
+          duration: 5000,
+        });
+        this.router.navigate(['register']);
+      }
+    );
+  };
 }
