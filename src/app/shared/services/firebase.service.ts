@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Login, Register } from '../interfaces/auth.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import firebase from 'firebase/compat';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,14 @@ export class FirebaseService {
     private http: HttpClient
   ) {}
 
+  saveCredentials = (user: any) => {
+    localStorage.setItem('auth_token', user._delegate.accessToken);
+    localStorage.setItem(
+      'auth_refresh',
+      user._delegate.stsTokenManager.refreshToken
+    );
+  };
+
   /**
    * A method to handle login with firebase
    *
@@ -27,16 +36,16 @@ export class FirebaseService {
 
   login = (data: Login) => {
     this.auth.signInWithEmailAndPassword(data.email, data.password).then(
-      () => {
+      (response) => {
+        console.log(response);
         this.snackBar.open('Successfully logged In...', '', {
           duration: 5000,
           panelClass: 'success',
         });
-        localStorage.setItem('auth_token', '');
+        this.saveCredentials(response.user);
         this.router.navigate(['dashboard']);
       },
       (error) => {
-        console.log('ERR', error);
         this.snackBar.open(error.message, '', {
           panelClass: 'error',
           duration: 5000,
@@ -62,7 +71,6 @@ export class FirebaseService {
         this.router.navigate(['login']);
       },
       (error) => {
-        console.log('ERR', error);
         this.snackBar.open(error.message, '', {
           panelClass: 'error',
           duration: 5000,

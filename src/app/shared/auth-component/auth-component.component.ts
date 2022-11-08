@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-auth-component',
@@ -10,12 +11,26 @@ export class AuthComponentComponent implements OnInit {
   screen!: string;
   hide = true;
   loading = false;
-  constructor() {}
+  password: string = '';
+  email: string = '';
+  constructor(private service: FirebaseService) {}
 
   ngOnInit() {}
 
-  login = () => {
-    console.log('HERE');
+  submit = () => {
     this.loading = true;
+    if (this.screen === 'login') {
+      this.login();
+    } else {
+      this.register();
+    }
+  };
+
+  login = () => {
+    this.service.login({ email: this.email, password: this.password });
+  };
+
+  register = () => {
+    this.service.register({ email: this.email, password: this.password });
   };
 }
