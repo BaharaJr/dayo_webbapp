@@ -68,4 +68,30 @@ export class FirebaseService {
       }
     );
   };
+
+  /**
+   * A method to handle logout with firebase
+   *
+   */
+
+  logout = () => {
+    this.auth.signOut().then(
+      () => {
+        this.snackBar.open('Successfully logged out...', '', {
+          duration: 5000,
+          panelClass: 'success',
+        });
+        localStorage.removeItem('token');
+        this.router.navigate(['login']);
+      },
+      (error) => {
+        console.log('ERR', error);
+        this.snackBar.open(error.message, '', {
+          panelClass: 'error',
+          duration: 5000,
+        });
+        this.router.navigate(['register']);
+      }
+    );
+  };
 }
