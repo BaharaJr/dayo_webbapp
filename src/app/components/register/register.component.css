@@ -1,0 +1,18 @@
+.login-screen {
+  height: 60vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-form {
+  width: 100% !important;
+}

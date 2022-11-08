@@ -1,21 +1,20 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { components } from './components';
+import { modules } from './modules';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, ...components],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatSnackBarModule,
     HttpClientModule,
-    MatProgressSpinnerModule,
+    ...modules,
     AngularFireModule.initializeApp({
       apiKey: 'AIzaSyCNXFk5pTLMFoVqKCP79M2z94CH3hfwgVI',
       authDomain: 'nestjs-auth-ae985.firebaseapp.com',
@@ -24,6 +23,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       messagingSenderId: '412889347826',
       appId: '1:412889347826:web:3d3a8e204d93822184c26b',
     }),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
