@@ -1,3 +1,38 @@
-<p>
-  dashboard works!
-</p>
+<div class="dashboard-container container">
+  <div *ngIf="loading">
+    <mat-progress-spinner></mat-progress-spinner>
+  </div>
+  <div *ngIf="!loading">
+    <div *ngIf="history.length>0 && !fromCalculator" style="margin-bottom: 10px; margin-top: 20px;">
+      <h1> Welcome {{email}}. Below is the history of you calculations </h1>
+    </div>
+
+    <div *ngIf="history.length === 0 && !fromCalculator" class="no-calculations">
+      <h1> You haven't perfomed any calculations. </h1>
+      <button mat-raised-button color="primary" [routerLink]="'/calculator'">Calculate</button>
+    </div>
+    <div *ngIf="history.length>0" class="row">
+      <div *ngIf="!fromCalculator" class="d-flex justify-content-end" style="margin-bottom: 10px;">
+        <button mat-raised-button color="primary" [routerLink]="'/calculator'">Calculate</button>
+      </div>
+      <div class="col-3" *ngFor="let data of history">
+        <mat-card (click)="cardClicked(data)" class="history-card w-100">
+          <mat-card-title-group>
+            <mat-card-title>{{data.created | date}}</mat-card-title>
+          </mat-card-title-group>
+          <mat-card-content>
+            <div>
+              <span>{{data.left +' '+data.operator+' '+data.right+ ' ' + ' = '+ data.result}}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="sticky-paginator">
+        <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
