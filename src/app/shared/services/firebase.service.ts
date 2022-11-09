@@ -1,17 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Login, Register } from '../interfaces/auth.interface';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import firebase from 'firebase/compat';
+import { Login, Register } from '../interfaces/auth.interface';
+import {
+  CalculationInterface,
+  CalculationReqInterface,
+  CalculatorSuccessResponse,
+} from '../interfaces/calculation.interface';
+import { Pager } from '../interfaces/pager.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseService {
   isLoggedIn = false;
+  api = '../../api';
 
   constructor(
     private readonly auth: AngularFireAuth,
@@ -20,14 +26,6 @@ export class FirebaseService {
     private http: HttpClient
   ) {}
 
-  saveCredentials = (user: any) => {
-    localStorage.setItem('auth_token', user._delegate.accessToken);
-    localStorage.setItem(
-      'auth_refresh',
-      user._delegate.stsTokenManager.refreshToken
-    );
-  };
-
   /**
    * A method to handle login with firebase
    *
@@ -35,24 +33,7 @@ export class FirebaseService {
    */
 
   login = (data: Login) => {
-    this.auth.signInWithEmailAndPassword(data.email, data.password).then(
-      (response) => {
-        console.log(response);
-        this.snackBar.open('Successfully logged In...', '', {
-          duration: 5000,
-          panelClass: 'success',
-        });
-        this.saveCredentials(response.user);
-        this.router.navigate(['dashboard']);
-      },
-      (error) => {
-        this.snackBar.open(error.message, '', {
-          panelClass: 'error',
-          duration: 5000,
-        });
-        this.router.navigate(['login']);
-      }
-    );
+    return this.auth.signInWithEmailAndPassword(data.email, data.password);
   };
 
   /**
@@ -62,22 +43,7 @@ export class FirebaseService {
    */
 
   register = (data: Register) => {
-    this.auth.createUserWithEmailAndPassword(data.email, data.password).then(
-      () => {
-        this.snackBar.open('Successfully registered...', '', {
-          duration: 5000,
-          panelClass: 'success',
-        });
-        this.router.navigate(['login']);
-      },
-      (error) => {
-        this.snackBar.open(error.message, '', {
-          panelClass: 'error',
-          duration: 5000,
-        });
-        this.router.navigate(['register']);
-      }
-    );
+    return this.auth.createUserWithEmailAndPassword(data.email, data.password);
   };
 
   /**
@@ -106,9 +72,44 @@ export class FirebaseService {
     );
   };
 
-  me = (token: string): Observable<any> => {
-    return this.http.get('../../api', {
+  me = (): Observable<any> => {
+    const token = localStorage.getItem('auth_token');
+    return this.http.get(`${this.api}/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+  };
+  history = (
+    pageDetails: Pager
+  ): Observable<{ history: CalculationInterface[]; total: number }> => {
+    const token = localStorage.getItem('auth_token');
+    return this.http.get<{ history: CalculationInterface[]; total: number }>(
+      `${this.api}/calculations?page=${pageDetails.page}&pageSize=${pageDetails.pageSize}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  };
+
+  delete = (id: string): Observable<CalculatorSuccessResponse> => {
+    const token = localStorage.getItem('auth_token');
+    return this.http.delete<CalculatorSuccessResponse>(
+      `${this.api}/calculations/${id}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  };
+
+  calculate = (
+    data: CalculationReqInterface
+  ): Observable<CalculationInterface> => {
+    const token = localStorage.getItem('auth_token');
+    return this.http.post<CalculationInterface>(
+      `${this.api}/calculations`,
+      data,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   };
 }
