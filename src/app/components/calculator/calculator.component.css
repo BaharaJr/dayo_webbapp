@@ -1,0 +1,24 @@
+.calculator-div{
+    margin-top: 50px;
+    height: auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.sticky-header{
+        position: sticky;
+            top: 0 !important;
+            background-color: white;
+            margin-bottom: 0px !important;
+            z-index: 100;
+}

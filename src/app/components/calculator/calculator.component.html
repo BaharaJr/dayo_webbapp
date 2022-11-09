@@ -1,3 +1,59 @@
-<p>
-  calculator works!
-</p>
+<div class="container calculator-div">
+  <div class="sticky-header">
+    <h1 class="text-center">Welcome Back!</h1>
+    <mat-card class="w-100 h-50  d-flex justify-content-between row">
+      <div class="d-flex justify-content-between">
+        <div>
+          <mat-form-field appearance="outline">
+            <input (mouseout)="calculations" class="text-center" matInput type="number" placeholder="Number"
+              autocomplete="off" [(ngModel)]="left" />
+          </mat-form-field>
+        </div>
+
+        <div>
+          <div>
+            <mat-form-field appearance="outline">
+              <input (mouseout)="calculations;validOperator" class="text-center" matInput type="string"
+                placeholder="Operator" autocomplete="off" [(ngModel)]="operator" />
+              <mat-error>Operator not permitted. Only arithmetic operators</mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <input (mouseout)="calculations" class="text-center" matInput type="number" placeholder="Number"
+              autocomplete="off" [(ngModel)]="right" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="d-flex justify-content-around">
+        <div>
+          <button [disabled]="loading" (click)="operator='+'; calculate()" mat-button>+</button>
+        </div>
+        <div>
+          <button [disabled]="loading" (click)="operator='-'; calculate()" mat-button>-</button>
+        </div>
+        <div>
+          <button [disabled]="loading" (click)="operator='/'; calculate()" mat-button>/</button>
+        </div>
+        <div>
+          <button [disabled]="loading" (click)="operator='*'; calculate()" mat-button>x</button>
+        </div>
+        <div>
+          <button [disabled]="loading" (click)="operator='%'; calculate()" mat-button>%</button>
+        </div>
+      </div>
+      <div class="mt-10 text-center mt-20">
+        <span>
+          <b>= {{currentResult}}</b>
+        </span>
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!fromDashboard">
+    <h1 class="text-center" style="margin: 10px;">History</h1>
+    <app-dashboard [fromCalculator]="true" [reload]="reload"></app-dashboard>
+  </div>
+</div>
