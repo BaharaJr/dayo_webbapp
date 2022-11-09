@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     if (!token) {
       this.rerouteToLogin();
     } else {
-      this.checkForTokenValidity(token);
+      this.checkForTokenValidity();
     }
   }
 
@@ -27,8 +27,8 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['login']);
   };
 
-  checkForTokenValidity = (token: string) => {
-    this.service.me(token).subscribe(
+  checkForTokenValidity = () => {
+    this.service.me().subscribe(
       (response) => {
         console.log(response);
         this.checkingAuth = false;

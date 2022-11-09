@@ -9,51 +9,26 @@
       <div>
         <mat-form-field appearance="outline" class="input-form">
           <mat-label>Email</mat-label>
-          <input
-            matInput
-            type="text"
-            placeholder="Email"
-            autocomplete="off"
-            [(ngModel)]="email"
-          />
+          <input matInput type="text" placeholder="Email" autocomplete="off" [(ngModel)]="email" />
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field appearance="outline" class="input-form">
           <mat-label>Password</mat-label>
-          <input
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            autocomplete="off"
-            [(ngModel)]="password"
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
-          >
+          <input matInput [type]="hide ? 'password' : 'text'" autocomplete="off" [(ngModel)]="password" />
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
         </mat-form-field>
       </div>
 
       <div>
-        <button
-          [disabled]="loading"
-          (click)="submit()"
-          mat-raised-button
-          color="primary"
-          style="margin-right: 5px"
-        >
+        <button [disabled]="loading || email==='' || password===''" (click)="submit()" mat-raised-button color="primary"
+          style="margin-right: 5px">
           <span *ngIf="loading">
-            <mat-spinner
-              color="primary"
-              style="display: inline-block !important"
-              [diameter]="30"
-            >
+            <mat-spinner color="primary" style="display: inline-block !important" [diameter]="30">
             </mat-spinner>
           </span>
           <span *ngIf="!loading">
